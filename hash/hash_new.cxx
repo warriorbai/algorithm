@@ -1,0 +1,6 @@
+class hashmap {
+public:
+    
+
+private:
+};
