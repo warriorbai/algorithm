@@ -19,7 +19,7 @@ int main() {
 //import data from data.txt
     vector<int> test;
     string s;
-    ifstream fin("data.txt");
+    ifstream fin("data2.txt");
     while(std::getline(fin, s) ) {
         test.push_back(atoi(s.c_str()));
     }
@@ -31,6 +31,16 @@ int main() {
         key = test[i];
         insertNode(&list1, key);
     }
+    dumpList(&list1);
+    slist pl = searchNode(&list1, 23);
+    if(pl) {
+        cout<<"search data is:"<<pl->data<<endl;
+    } 
+    deleteNode(&list1, 12);
+    cout<<"delete one matching item in list."<<endl;
+    dumpList(&list1);
+    deleteNode(&list1, 12, true);
+    cout<<"delete all matching item in list."<<endl;
     dumpList(&list1);
     return 0;
 }

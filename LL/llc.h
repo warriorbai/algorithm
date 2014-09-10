@@ -7,6 +7,6 @@ typedef struct sl_node {
 
 bool insertNode(slist *head, int key);
 slist searchNode(slist *head, int key); 
-void deleteNode(slist *head, int key); 
+void deleteNode(slist *head, int key, bool delete_all = false); 
 void dumpList(slist *head); 
 
