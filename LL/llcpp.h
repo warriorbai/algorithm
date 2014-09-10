@@ -6,7 +6,11 @@ using namespace std;
 
 class single_ll {
 public:
-    single_ll() { next = NULL; }    
+    single_ll(string str) 
+    { 
+        data = str;
+        next = NULL; 
+    }    
     string getValue() const { return data;}
     string setValue(string str) { data = str;}
     single_ll* getNext() const { return next; }

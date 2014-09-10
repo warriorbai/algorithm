@@ -24,8 +24,13 @@ int main() {
         test.push_back(atoi(s.c_str()));
     }
 
-    slist list1; 
+    slist list1 = NULL; 
 
-
+    int key;
+    for(size_t i=0; i < test.size(); ++i) {
+        key = test[i];
+        insertNode(&list1, key);
+    }
+    dumpList(&list1);
     return 0;
 }
