@@ -1,7 +1,27 @@
 #include<vector>
 #include<iostream>
+#include<string>
+#include<map>
+#include"common.h"
+using namespace std;
+typedef void (*pFunc)();
+map<string, pFunc> funcMap;
+void init_func_map() {
+    funcMap.insert(pair<string, pFunc>("1.1", test_1_1));
+
+}
 
 int main() {
-
+    string option;
+    init_func_map();
+    cout<<"Input case num:";
+    cin>>option;
+    map<string, pFunc>::iterator it = funcMap.find(option);
+    if(it != funcMap.end()) {
+        (it->second)();
+    } else {
+        cerr<<"Wrong option. No matching case."<<endl;    
+    }
+    cout<<endl;
     return 0;
 }
