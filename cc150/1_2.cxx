@@ -1,5 +1,6 @@
 #include "1_2.h"
 #include<set>
+#include<vector>
 //This file is used for store solutions for 1.2 - 1.8
 void reverse_str(char* str) {
     if(!str) return;
@@ -56,4 +57,29 @@ void test_1_3() {
     cout<<str<<endl;
     rm_duplicate_c(str);
     cout<<str<<endl;
+}
+
+
+//1.4
+// Check if two strings are anagrams
+bool isAnagrams(string& s1, string& s2) {
+    vector<int> v_ct(256,0);
+    for(int i = 0; i != s1.length(); ++i) {
+        int num = (int)s1[i];
+        v_ct[num]++;
+    }
+    for(int j = 0; j != s2.length(); j++) {
+        int num = (int)s2[j];
+        if(v_ct[num] == 0)    return false;
+        else    v_ct[num]--;
+    }
+    return true;
+}
+
+void test_1_4() {
+    string str1 = "tobias";
+    string str2 = "saibot";
+    cin >> str1 >> str2;
+    string buf = isAnagrams(str1, str2)? " are ":" are not ";
+    cout << str1 <<" and "<< str2 << buf <<" anagrams."<<endl;
 }

@@ -10,6 +10,7 @@ void init_func_map() {
     funcMap.insert(pair<string, pFunc>("1.1", test_1_1));
     funcMap.insert(pair<string, pFunc>("1.2", test_1_2));
     funcMap.insert(pair<string, pFunc>("1.3", test_1_3));
+    funcMap.insert(pair<string, pFunc>("1.4", test_1_4));
 }
 
 int main() {
