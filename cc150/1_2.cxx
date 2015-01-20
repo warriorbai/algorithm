@@ -85,3 +85,45 @@ void test_1_4() {
 }
 
 
+//1.6
+//rotate NxN image represented by 4 byte number
+//mode 1 - clockwire 90   2 - counter clockwise 90
+void rotate(int a[][6], int size, bool mode) {
+for(int layer = 0; layer < size/2 ;layer++) {
+    int i = layer;
+    int start_j = layer;
+    int end_j = size - layer - 1;
+    for(int j = start_j; j < end_j;j++) {
+        int target  = a[i][j];
+        int m = j;
+        int n = -i+size-1;
+        do {
+            int temp = a[m][n];
+            a[m][n] = target;
+            target = temp;
+            int tm = m;
+            m = n;
+            n = -tm+size-1;
+        } while (m != j || n != -i+size-1); 
+    }
+}
+}
+
+void dump(int a[][6], int size) {
+    for(int i = 0; i < size; i++) {
+        for(int j = 0; j < size; j++) {
+            cout<<a[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<endl;
+}
+
+void test_1_6() {
+    int a[6][6] = {{1,2,3,4,5,6}, {4,5,6,7,8,9}, {7,8,9,10,11,12}, {1,3,5,7,9,11},{2,4,6,8,10,12},{333,333,333,111,111,111}};
+    dump(a,6);
+    rotate(a, 6, 1);
+    dump(a,6);
+    rotate(a, 6, 2);
+    dump(a,6);
+}
