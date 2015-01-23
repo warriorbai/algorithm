@@ -6,6 +6,8 @@ void test_1_2();
 void test_1_3();
 void test_1_4();
 void test_1_6();
+void test_1_7();
+void test_1_8();
 
 
 

@@ -1,6 +1,7 @@
 #include "1_2.h"
 #include<set>
 #include<vector>
+#include<iomanip>
 //This file is used for store solutions for 1.2 - 1.8
 void reverse_str(char* str) {
     if(!str) return;
@@ -89,24 +90,24 @@ void test_1_4() {
 //rotate NxN image represented by 4 byte number
 //mode 1 - clockwire 90   2 - counter clockwise 90
 void rotate(int a[][6], int size, bool mode) {
-for(int layer = 0; layer < size/2 ;layer++) {
-    int i = layer;
-    int start_j = layer;
-    int end_j = size - layer - 1;
-    for(int j = start_j; j < end_j;j++) {
-        int target  = a[i][j];
-        int m = j;
-        int n = -i+size-1;
-        do {
-            int temp = a[m][n];
-            a[m][n] = target;
-            target = temp;
-            int tm = m;
-            m = n;
-            n = -tm+size-1;
-        } while (m != j || n != -i+size-1); 
+    for(int layer = 0; layer < size/2 ;layer++) {
+        int i = layer;
+        int start_j = layer;
+        int end_j = size - layer - 1;
+        for(int j = start_j; j < end_j;j++) {
+            int target  = a[i][j];
+            int m = j;
+            int n = -i+size-1;
+            do {
+                int temp = a[m][n];
+                a[m][n] = target;
+                target = temp;
+                int tm = m;
+                m = n;
+                n = -tm+size-1;
+            } while (m != j || n != -i+size-1); 
+        }
     }
-}
 }
 
 void dump(int a[][6], int size) {
@@ -121,9 +122,72 @@ void dump(int a[][6], int size) {
 
 void test_1_6() {
     int a[6][6] = {{1,2,3,4,5,6}, {4,5,6,7,8,9}, {7,8,9,10,11,12}, {1,3,5,7,9,11},{2,4,6,8,10,12},{333,333,333,111,111,111}};
-    dump(a,6);
+    dump(a, 6);
     rotate(a, 6, 1);
-    dump(a,6);
+    dump(a, 6 );
     rotate(a, 6, 2);
-    dump(a,6);
+    dump(a, 6 );
+}
+
+//Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column is set to 0.
+
+void fill_zero_cross(int* matrix, int row, int column) {
+    bool* zero_row = new bool[row] (); 
+    bool* zero_column = new bool[column] (); 
+    for(int i = 0; i < row; i++) { 
+        for(int j = 0; j < column; j++) {
+            if(matrix[i*column + j] == 0) {
+                zero_row[i] = true;
+                zero_column[j] = true;
+            }
+        }
+    }
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < column; j++) {
+            if(zero_row[i] == true || zero_column[j] == true) {
+                matrix[i*column + j] = 0;
+            }
+        }
+    }
+    delete [] zero_row;
+    delete [] zero_column;
+}
+
+void dump_matrix(int* a, int row, int column) {
+    for(int i = 0; i < row; i++) {
+        for(int j = 0; j < column; j++) {
+            cout<<setw(4)<<a[i*column + j]<<" ";
+        }
+        cout<<endl;
+    }
+    cout<<endl;
+}
+
+void test_1_7() {
+    int a[24] = {1,0,3,4,0,6, 4,5,6,7,8,9, 7,8,9,10,11,12, 1,3,5,7,9,0};
+    dump_matrix(a,4,6);
+    fill_zero_cross(a, 4, 6);
+    dump_matrix(a,4,6);
+}
+
+
+//1.8 Assume you have a method isSubstring which checks if one word is a substring of another. 
+//Given two strings, s1 and s2, write code to check if s2 is a rotation of s1 using only one call to isSubstring (i.e., “waterbottle” is a rotation of “erbottlewat”). 
+bool isRotation(string& s1, string& s2) {
+    if(s1.length() != s2.length())    return false;
+    string temp = s1+s1;
+    if(temp.find(s2) != std::string::npos) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void test_1_8() {
+    string s1,s2;
+    while(!cin.eof()) {
+        cout<<"Please input two string:";
+        cin>>s1>>s2;
+        cout<<isRotation(s1, s2)<<endl;
+    }
 }
