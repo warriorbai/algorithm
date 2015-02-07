@@ -1,4 +1,5 @@
 // implementation of hash table with C ( key type C-stype string, value type integer )
+// hash chaining
 // seperate chaining
 #include<iostream>
 #include<fstream>
