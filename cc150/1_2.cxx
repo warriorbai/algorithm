@@ -89,24 +89,24 @@ void test_1_4() {
 //rotate NxN image represented by 4 byte number
 //mode 1 - clockwire 90   2 - counter clockwise 90
 void rotate(int a[][6], int size, bool mode) {
-for(int layer = 0; layer < size/2 ;layer++) {
-    int i = layer;
-    int start_j = layer;
-    int end_j = size - layer - 1;
-    for(int j = start_j; j < end_j;j++) {
-        int target  = a[i][j];
-        int m = j;
-        int n = -i+size-1;
-        do {
-            int temp = a[m][n];
-            a[m][n] = target;
-            target = temp;
-            int tm = m;
-            m = n;
-            n = -tm+size-1;
-        } while (m != j || n != -i+size-1); 
+    for(int layer = 0; layer < size/2 ;layer++) {
+        int i = layer;
+        int start_j = layer;
+        int end_j = size - layer - 1;
+        for(int j = start_j; j < end_j;j++) {
+            int target  = a[i][j];
+            int m = j;
+            int n = -i+size-1;
+            do {
+                int temp = a[m][n];
+                a[m][n] = target;
+                target = temp;
+                int tm = m;
+                m = n;
+                n = -tm+size-1;
+            } while (m != j || n != -i+size-1); 
+        }
     }
-}
 }
 
 void dump(int a[][6], int size) {
@@ -127,3 +127,9 @@ void test_1_6() {
     rotate(a, 6, 2);
     dump(a,6);
 }
+
+
+//1.7   Write an algorithm such that if an element in an MxN matrix is 0, its entire row and column is set to 0.
+
+
+
