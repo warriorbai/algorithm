@@ -4,16 +4,19 @@
 using namespace std;
 
 //linked list
-class Node {
-    int data;
-    Node* next;
-};
-typedef Node* pNode;
-class LList {
+template <class T> class Node {
 public:
+    T data;
+    Node<T>* next;
+};
+template <class T> class LList {
+public:
+    typedef Node<T>* pNode;
     LList() {
         head = NULL;
     }
+    LList(T* array, int size);
+    void dump();
 private:
     pNode head;
 };
