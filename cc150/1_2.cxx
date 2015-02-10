@@ -191,3 +191,8 @@ void test_1_8() {
         cout<<isRotation(s1, s2)<<endl;
     }
 }
+
+
+
+
+
