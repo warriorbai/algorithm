@@ -1,6 +1,6 @@
 
-OBJS  = 1_1.o 1_2.o test.o 
-HEADERS = 1_1.h 1_2.h common.h
+OBJS  = 1_1.o 1_2.o 2.o test.o 
+HEADERS = 1_1.h 1_2.h 2.h common.h
 
 run: $(OBJS) $(HEADER) 
 	g++ $(OBJS) -o run
