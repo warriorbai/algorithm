@@ -17,6 +17,10 @@ public:
     }
     LList(T* array, int size);
     void dump();
+    bool isEmpty() {
+        return head == NULL;
+    }
+    void remove_duplicate();
 private:
     pNode head;
 };

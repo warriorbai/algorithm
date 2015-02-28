@@ -31,10 +31,38 @@ template <class T> void LList<T>::dump() {
     }
     cout<<endl;
 }
+
+//2.1 Write code to remove duplicates from an unsorted linked list.
+//FOLLOW UP
+//How would you solve this problem if a temporary buffer is not allowed?
 //2.1 
+template <class T> void LList<T>::remove_duplicate() {
+    if(isEmpty())    return;
+    pNode current = head->next; 
+    pNode prev = head;
+    pNode it;
+    while(current) {
+        it = head;
+        while(it != current) {
+            if(it->data == current->data) {
+                prev->next = current->next;
+                delete current;
+                current = prev;
+                break;
+            } 
+            it = it->next;
+        }
+        prev = current;
+        current = current->next;
+    }
+    dump();
+}
+
 void test_2_1() {
-    int array[6] = { 1, 3, 5, 7, 33, 2}; 
-    LList<int> list_int(array, 6);
+    int array[6] = { 1, 1, 5, 7, 7, 2}; 
+    int array1[5] = { 7, 7, 7, 7, 7}; 
+    LList<int> list_int(array1, 5);
     list_int.dump();
+    list_int.remove_duplicate();
 }
 
