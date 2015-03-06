@@ -20,13 +20,15 @@ public:
     bool isEmpty() {
         return head == NULL;
     }
-    void remove_duplicate();
+    void  remove_duplicate();
+    pNode get_nth_to_last(int n);
 private:
     pNode head;
 };
 
 
 void test_2_1();
+void test_2_2();
 
 
 

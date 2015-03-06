@@ -66,3 +66,35 @@ void test_2_1() {
     list_int.remove_duplicate();
 }
 
+
+//2.2 Implement an algorithm to find the nth to last element of a singly linked list.
+template <class T>  Node<T>* LList<T>::get_nth_to_last(int n) {
+    dump();
+    if (head == NULL || n < 1) {
+        return NULL;
+    }
+    pNode p1 = head;
+    pNode p2 = head;
+    for (int j = 0; j < n - 1; ++j) { // skip n-1 steps ahead
+        if (p2 == NULL) {
+            return NULL; // not found since list size < n
+        }
+        p2 = p2->next;
+    }
+    while (p2->next != NULL) {
+        p1 = p1->next;
+        p2 = p2->next;
+    }
+    return p1;
+}
+
+void test_2_2() {
+    int array[10] = { 1, 1, 5, 7, 7, 2, 4, 5, 11, 21};
+    LList<int> list_int(array, 10);
+    list_int.dump();
+    cout<<list_int.get_nth_to_last(2)->data<<endl;
+}
+
+
+
+
