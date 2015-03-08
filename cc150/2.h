@@ -20,8 +20,11 @@ public:
     bool isEmpty() {
         return head == NULL;
     }
+    pNode get_head() { return head; }
+    pNode find(T a); 
     void  remove_duplicate();
     pNode get_nth_to_last(int n);
+    bool  delete_item(pNode it);
 private:
     pNode head;
 };
@@ -29,6 +32,7 @@ private:
 
 void test_2_1();
 void test_2_2();
+void test_2_3();
 
 
 

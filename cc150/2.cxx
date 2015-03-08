@@ -32,6 +32,16 @@ template <class T> void LList<T>::dump() {
     cout<<endl;
 }
 
+template <class T> Node<T>* LList<T>::find(T a) {
+    pNode it = head;
+    while(it != NULL) {
+        if(it->data == a) {
+            return it;
+        }
+        it = it->next;
+    }
+    return NULL;
+}
 //2.1 Write code to remove duplicates from an unsorted linked list.
 //FOLLOW UP
 //How would you solve this problem if a temporary buffer is not allowed?
@@ -97,4 +107,27 @@ void test_2_2() {
 
 
 
+//Implement an algorithm to delete a node in the middle of a single linked list, given only access to that node.
+//EXAMPLE
+//Input: the node ‘c’ from the linked list a->b->c->d->e
+//Result: nothing is returned, but the new linked list looks like a->b->d->e
+template <class T>  bool LList<T>::delete_item(pNode it) {
+    if(it == NULL || it->next == NULL)  return false;
+    pNode next = it->next;
+    it->data = next->data;
+    it->next = next->next;
+    delete next;
+    return true;
+}
 
+void test_2_3() {
+    int array[10] = { 1, 1, 5, 7, 7, 2, 4, 5, 11, 21};
+    LList<int> list_int(array, 10);
+    list_int.dump();
+    Node<int>* to_del = list_int.get_head();
+    to_del = list_int.find(2);
+    if(to_del != NULL) {
+        list_int.delete_item(to_del);
+    }
+    list_int.dump();
+}
