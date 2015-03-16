@@ -6,8 +6,8 @@
 //
 //constructor by a array
 template <class T> LList<T>::LList(T* array, int size) {
+    tail = NULL;
     if(size > 0) {
-        pNode tail = NULL;
         for(int i = 0; i < size; ++i) {
            pNode node_new = new Node<T>;
            node_new->data = array[i]; 
@@ -107,7 +107,7 @@ void test_2_2() {
 
 
 
-//Implement an algorithm to delete a node in the middle of a single linked list, given only access to that node.
+//2.3 Implement an algorithm to delete a node in the middle of a single linked list, given only access to that node.
 //EXAMPLE
 //Input: the node ‘c’ from the linked list a->b->c->d->e
 //Result: nothing is returned, but the new linked list looks like a->b->d->e
@@ -130,4 +130,44 @@ void test_2_3() {
         list_int.delete_item(to_del);
     }
     list_int.dump();
+}
+
+
+//2.4
+//You have two numbers represented by a linked list, where each node contains a single digit. The digits are stored in reverse order, such that the 1’s digit is at the head of the list. Write a function that adds the two numbers and returns the sum as a linked list.
+//EXAMPLE
+//Input: (3 -> 1 -> 5), (5 -> 9 -> 2)
+//Output: 8 -> 0 -> 8
+
+void add(LList<int>& num1, LList<int>& num2, LList<int>& result) {
+    result.clear();
+    Node<int>* p1 = num1.get_head(); 
+    Node<int>* p2 = num2.get_head(); 
+    int carry = 0;
+    while(p1 != NULL || p2 != NULL) {
+        int num1 = (p1 == NULL) ? 0:p1->data; 
+        int num2 = (p2 == NULL) ? 0:p2->data; 
+        int sum = (num1 + num2 + carry); 
+        int val = sum % 10;
+cout<<num1<< " "<<num2<<" "<< sum<<endl;
+        result.push_back(val);
+        carry = sum/10;
+        if(p1) p1 = p1->next;
+        if(p2) p2 = p2->next;
+    }
+    if(carry != 0) {
+        result.push_back(carry);
+    }
+}
+
+void test_2_4() {
+    int array1[4] = { 7, 1, 5, 7};
+    int array2[2] = { 5, 8};
+    LList<int> num1(array1, 4);
+    LList<int> num2(array2, 2);
+    LList<int> result;
+    num1.dump();
+    num2.dump();
+    add(num1,num2,result);
+    result.dump();
 }
