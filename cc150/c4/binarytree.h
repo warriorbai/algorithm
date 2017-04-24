@@ -21,10 +21,15 @@ public:
    ~BTree();
    void insert(int d);
    void print();
+   typedef enum {
+      PRE, POST, IN
+   } TraverseType
    
 private:
    void insert_imp(TreeNode* node, int d);
    void preorder(TreeNode* node);
+   void postorder(TreeNode* node);
+   void inorder(TreeNode* node);
    TreeNode* _root;
 };
 #endif

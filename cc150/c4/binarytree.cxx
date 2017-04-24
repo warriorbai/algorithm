@@ -61,7 +61,31 @@ void BTree::preorder(TreeNode *node)
 
 }
 
-void BTree::print()
+void BTree::postorder(TreeNode *node)
+{
+   if (!node) {
+      return;
+   }
+
+   preorder(node->left);
+   preorder(node->right);
+   std::cout << node->data << std::endl;
+
+}
+
+void BTree::inorder(TreeNode *node)
+{
+   if (!node) {
+      return;
+   }
+
+   preorder(node->left);
+   std::cout << node->data << std::endl;
+   preorder(node->right);
+
+}
+
+void BTree::print(type)
 {
    if (!_root) {
       std::cout << "NULL" << std::endl;
