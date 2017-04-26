@@ -1,6 +1,7 @@
 #include "binarytree.h"
 #include <iostream>
 #include "stddef.h"
+#include <stack>
 
 BTree::BTree()
 {
@@ -55,9 +56,34 @@ void BTree::preorder(TreeNode *node)
       return;
    }
 
-   std::cout << node->data << std::endl;
+   std::cout << node->data << " ";
    preorder(node->left);
    preorder(node->right);
+
+}
+
+//Non-recursive method
+void BTree::preorder_nr(TreeNode *node)
+{
+   if (!node) {
+      return;
+   }
+
+   TreeNode *p;
+   p = node;
+   std::stack<TreeNode*> snode;
+
+   while(p != NULL || !snode.empty()) {
+      if (p == NULL) {
+         p = snode.top();
+         snode.pop();
+      }
+      std::cout << p->data << " "; 
+      if (p->right) {
+         snode.push(p->right);
+      }
+      p = p->left;
+   }
 
 }
 
@@ -67,11 +93,25 @@ void BTree::postorder(TreeNode *node)
       return;
    }
 
-   preorder(node->left);
-   preorder(node->right);
-   std::cout << node->data << std::endl;
+   postorder(node->left);
+   postorder(node->right);
+   std::cout << node->data << " ";
 
 }
+
+// Non-recursive
+void BTree::postorder_nr(TreeNode *node)
+{
+   if (!node) {
+      return;
+   }
+
+   TreeNode *p;
+   p = node;
+   std::stack<TreeNode*> snode;
+
+}
+
 
 void BTree::inorder(TreeNode *node)
 {
@@ -79,18 +119,66 @@ void BTree::inorder(TreeNode *node)
       return;
    }
 
-   preorder(node->left);
-   std::cout << node->data << std::endl;
-   preorder(node->right);
+   inorder(node->left);
+   std::cout << node->data << " ";
+   inorder(node->right);
 
 }
 
-void BTree::print(type)
+void BTree::inorder_nr(TreeNode *node)
+{
+   if (!node) {
+      return;
+   }
+
+   TreeNode *p;
+   p = node;
+   std::stack<TreeNode*> snode;
+
+   while(p != NULL || !snode.empty()) {
+      if (p != NULL) {
+         if (p->left) {
+            snode.push(p);
+            p = p->left;
+         } else {
+            std::cout << p->data << " ";
+            p = p->right;
+         }
+      } else {
+         p = snode.top();
+         snode.pop();
+         std::cout << p->data << " ";
+         p = p->right;
+      }
+   }
+}
+
+void BTree::print(TraverseType type)
 {
    if (!_root) {
       std::cout << "NULL" << std::endl;
       return;
    } 
 
-   preorder(_root);
+   switch(type) {
+   case PRE:
+      preorder_nr(_root);
+      std::cout << std::endl;
+      preorder(_root);
+      break;
+   case POST:
+      postorder(_root);
+      std::cout << std::endl;
+      postorder_nr(_root);
+      break;
+   case IN:
+      inorder(_root);
+      std::cout << std::endl;
+      inorder_nr(_root);
+      break;
+   default:
+      std::cout << "Invalid traverse type." << std::endl;
+   }
+   std::cout << std::endl;
+  
 }

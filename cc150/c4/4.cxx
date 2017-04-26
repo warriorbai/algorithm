@@ -12,7 +12,11 @@ int main()
    tree.insert(10);
    tree.insert(1);
    tree.insert(15);
+   tree.insert(21);
+   tree.insert(17);
 
-   tree.print();
+   tree.print(PRE);
+   tree.print(POST);
+   tree.print(IN);
    return 0;
 }
