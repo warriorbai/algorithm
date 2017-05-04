@@ -106,10 +106,35 @@ void BTree::postorder_nr(TreeNode *node)
       return;
    }
 
-   TreeNode *p;
-   p = node;
+   TreeNode *cur;
+   TreeNode *pre;
+   cur = node;
+   pre = NULL;
    std::stack<TreeNode*> snode;
 
+   while(cur != NULL || !snode.empty()) {
+      if (cur != NULL) {
+         snode.push(cur);
+         if (cur->right) {
+            snode.push(cur->right);
+         }
+         cur = cur->left;
+      } else {
+         cur = snode.top();
+         snode.pop(); 
+         if (!cur->left && !cur->right) {
+            std::cout << cur->data << " ";
+            pre = cur;
+            cur = NULL;
+         } else {
+            if (pre == cur->right || pre == cur->left) {
+               std::cout << cur->data << " ";
+               pre = cur;
+               cur = NULL;
+            }
+         }
+      }
+   }
 }
 
 
