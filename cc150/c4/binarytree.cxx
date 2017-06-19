@@ -8,13 +8,17 @@ BTree::BTree()
    _root = NULL;
 }
 
+
 BTree::~BTree()
 {
 
 
 }
 
-void BTree::insert_imp(TreeNode *node, int d)
+
+void
+BTree::insert_imp(TreeNode *node,
+                  int d)
 {
    TreeNode *insert_node;
    bool left;
@@ -40,7 +44,9 @@ void BTree::insert_imp(TreeNode *node, int d)
    }
 }
 
-void BTree::insert(int d)
+
+void
+BTree::insert(int d)
 {
    if (_root == NULL) {
       _root = new TreeNode;
@@ -50,7 +56,66 @@ void BTree::insert(int d)
    }
 }
 
-void BTree::preorder(TreeNode *node)
+
+TreeNode*
+BTree::find_min(TreeNode *node)
+{
+   TreeNode *n = node;
+   while(n && n->left) {
+      n = n->left;
+   }
+   return n;
+}
+
+
+TreeNode*
+BTree::remove_imp(TreeNode *node,
+                  int d)
+{
+   TreeNode *n = node;
+   TreeNode *tmp = NULL;
+
+   if (n == NULL) {
+      return NULL;
+   } else if (d > n->data) {
+      n->right = remove_imp(n->right, d);   
+   } else if (d < n->data) {
+      n->left = remove_imp(n->left, d);
+   } else {
+   // Found node and remove it
+      if (n->left && n->right) {
+      // Two child, need choose a new one replace itself
+         tmp = find_min(n->right);
+         n->data = tmp->data;
+         n->right = remove_imp(n->right, n->data);
+      } else {
+      // One or zero chiled, remove and child replace itseft.
+         tmp = n;
+         if (n->left == NULL) {
+            n = n->right;
+         } else if (n->right == NULL) {
+            n = n->left;
+         }
+         delete tmp;
+      }
+   }
+   return n;
+}
+
+
+void
+BTree::remove(int d)
+{
+   if (_root == NULL) {
+      return;
+   } else {
+      remove_imp(_root, d);
+   }
+}
+
+
+void
+BTree::preorder(TreeNode *node)
 {
    if (!node) {
       return;
@@ -62,8 +127,10 @@ void BTree::preorder(TreeNode *node)
 
 }
 
+
 //Non-recursive method
-void BTree::preorder_nr(TreeNode *node)
+void
+BTree::preorder_nr(TreeNode *node)
 {
    if (!node) {
       return;
@@ -87,7 +154,9 @@ void BTree::preorder_nr(TreeNode *node)
 
 }
 
-void BTree::postorder(TreeNode *node)
+
+void
+BTree::postorder(TreeNode *node)
 {
    if (!node) {
       return;
@@ -99,8 +168,10 @@ void BTree::postorder(TreeNode *node)
 
 }
 
+
 // Non-recursive
-void BTree::postorder_nr(TreeNode *node)
+void
+BTree::postorder_nr(TreeNode *node)
 {
    if (!node) {
       return;
@@ -138,7 +209,8 @@ void BTree::postorder_nr(TreeNode *node)
 }
 
 
-void BTree::inorder(TreeNode *node)
+void
+BTree::inorder(TreeNode *node)
 {
    if (!node) {
       return;
@@ -150,7 +222,10 @@ void BTree::inorder(TreeNode *node)
 
 }
 
-void BTree::inorder_nr(TreeNode *node)
+
+//Non-recursive method
+void
+BTree::inorder_nr(TreeNode *node)
 {
    if (!node) {
       return;
@@ -178,7 +253,9 @@ void BTree::inorder_nr(TreeNode *node)
    }
 }
 
-void BTree::print(TraverseType type)
+
+void
+BTree::print(TraverseType type)
 {
    if (!_root) {
       std::cout << "NULL" << std::endl;
