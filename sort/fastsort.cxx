@@ -5,7 +5,8 @@
 
 using namespace std;
 
-void fast_sort(vector<int>& src, int begin, int end){
+void fast_sort(vector<int>& src, int begin, int end)
+{
     if(end - begin < 1) return;
     int x = src[end];
     int i,j;
@@ -28,14 +29,16 @@ void fast_sort(vector<int>& src, int begin, int end){
 
 }
 
-void dump(vector<int>& src) {
+void dump(vector<int>& src)
+{
     for(int i=0;i<src.size();++i) {
         cout<<src[i]<<" ";
     }
     cout<<endl;
 }
 
-int main() {
+int main()
+{
     vector<int> test;
     string s;
     ifstream fin("data.txt");
