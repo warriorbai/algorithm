@@ -284,3 +284,62 @@ BTree::print(TraverseType type)
    std::cout << std::endl;
   
 }
+
+
+AVLTree::AVLTree()
+{
+   _root = NULL;
+}
+
+
+AVLTree::~AVLTree()
+{
+}
+
+
+void
+AVLTree::insert(int d)
+{
+   if (_root == NULL) {
+      _root = new AVLTreeNode;
+      _root->data = d;
+      _root->depth = 1;
+   } else {
+      _root = insert_imp(_root, d);
+   }
+}
+
+
+AVLTreeNode*
+AVLTree::insert_imp(AVLTreeNode *node,
+                    int d)
+{
+   AVLTreeNode *insert_node;
+   bool left;
+
+   if (node == NULL) {
+      return 0;
+   }
+
+   if (d >= node->data) {
+      insert_node = static_cast<AVLTreeNode*>(node->right);
+      left = false;
+   } else {
+      insert_node = static_cast<AVLTreeNode*>(node->left);
+      left = true;
+   }
+
+   if (insert_node != NULL) {
+      insert_imp(insert_node, d);
+   } else {
+      insert_node = new AVLTreeNode;
+      insert_node->data = d;
+      if (left) {
+         node->left = insert_node;
+      } else {
+         node->right = insert_node;
+      }
+      insert_node->parent = node;
+   }
+}
+
