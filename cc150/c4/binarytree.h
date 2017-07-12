@@ -20,6 +20,12 @@ public:
       left = NULL;
       right = NULL;
    }
+   
+   virtual void print()
+   {
+      std::cout << data << " ";
+   }
+
    int data;
    TreeNode *left;
    TreeNode *right;
@@ -33,9 +39,15 @@ public:
    {
       std::cout << "Build a AVL tree node." << std::endl;
       parent = NULL;
-      depth = 0;
+      depth = 1;
    }
-   int depth;  //Max depth of its child.
+   
+   void print()
+   {
+      std::cout << data << "__" << depth << " ";
+   }
+
+   int depth;  //Max depth of the tree the node as a root.
    TreeNode *parent;
 };
 
@@ -58,7 +70,6 @@ protected:
    void postorder_nr(TreeNode* node);
    void inorder(TreeNode* node);
    void inorder_nr(TreeNode* node);
-private:
    TreeNode* _root;
 };
 
@@ -70,7 +81,6 @@ public:
    void insert(int d);
 private:
    AVLTreeNode* insert_imp(AVLTreeNode* node, int d);
-   AVLTreeNode* _root;
 };
 
 #endif

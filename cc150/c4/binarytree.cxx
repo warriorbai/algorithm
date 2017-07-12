@@ -121,7 +121,7 @@ BTree::preorder(TreeNode *node)
       return;
    }
 
-   std::cout << node->data << " ";
+   node->print();
    preorder(node->left);
    preorder(node->right);
 
@@ -145,7 +145,7 @@ BTree::preorder_nr(TreeNode *node)
          p = snode.top();
          snode.pop();
       }
-      std::cout << p->data << " "; 
+      p->print();
       if (p->right) {
          snode.push(p->right);
       }
@@ -164,8 +164,7 @@ BTree::postorder(TreeNode *node)
 
    postorder(node->left);
    postorder(node->right);
-   std::cout << node->data << " ";
-
+   node->print();
 }
 
 
@@ -194,12 +193,12 @@ BTree::postorder_nr(TreeNode *node)
          cur = snode.top();
          snode.pop(); 
          if (!cur->left && !cur->right) {
-            std::cout << cur->data << " ";
+            cur->print();
             pre = cur;
             cur = NULL;
          } else {
             if (pre == cur->right || pre == cur->left) {
-               std::cout << cur->data << " ";
+               cur->print();
                pre = cur;
                cur = NULL;
             }
@@ -217,7 +216,7 @@ BTree::inorder(TreeNode *node)
    }
 
    inorder(node->left);
-   std::cout << node->data << " ";
+   node->print();
    inorder(node->right);
 
 }
@@ -241,13 +240,13 @@ BTree::inorder_nr(TreeNode *node)
             snode.push(p);
             p = p->left;
          } else {
-            std::cout << p->data << " ";
+            p->print();
             p = p->right;
          }
       } else {
          p = snode.top();
          snode.pop();
-         std::cout << p->data << " ";
+         p->print();
          p = p->right;
       }
    }
@@ -257,26 +256,27 @@ BTree::inorder_nr(TreeNode *node)
 void
 BTree::print(TraverseType type)
 {
-   if (!_root) {
+      std::cout << "insert first---" << this->_root << std::endl;
+   if (!this->_root) {
       std::cout << "NULL" << std::endl;
       return;
    } 
 
    switch(type) {
    case PRE:
-      preorder_nr(_root);
+      preorder_nr(this->_root);
       std::cout << std::endl;
-      preorder(_root);
+      preorder(this->_root);
       break;
    case POST:
-      postorder(_root);
+      postorder(this->_root);
       std::cout << std::endl;
-      postorder_nr(_root);
+      postorder_nr(this->_root);
       break;
    case IN:
-      inorder(_root);
+      inorder(this->_root);
       std::cout << std::endl;
-      inorder_nr(_root);
+      inorder_nr(this->_root);
       break;
    default:
       std::cout << "Invalid traverse type." << std::endl;
@@ -298,14 +298,46 @@ AVLTree::~AVLTree()
 
 
 void
+update_depth(AVLTreeNode *node)
+{
+   AVLTreeNode  *p = node;
+   if (p == NULL) {
+      return;
+   }
+
+   while(p->parent) {
+      AVLTreeNode *parent = dynamic_cast<AVLTreeNode*>(p->parent);
+      if(p->depth + 1 > parent->depth) {
+         parent->depth++;
+      }
+      p = dynamic_cast<AVLTreeNode*>(p->parent);
+   }
+}
+
+
+void
+avl_balancing(AVLTreeNode *node)
+{
+   AVLTreeNode *target = find_non_balance_node(node);
+
+   if (target == NULL) {
+      return;
+   }
+
+   
+}
+
+
+void
 AVLTree::insert(int d)
 {
    if (_root == NULL) {
       _root = new AVLTreeNode;
       _root->data = d;
-      _root->depth = 1;
    } else {
-      _root = insert_imp(_root, d);
+      AVLTreeNode* new_node;
+      new_node = insert_imp(dynamic_cast<AVLTreeNode*>(_root), d);
+      avl_balancing(new_node);
    }
 }
 
@@ -315,6 +347,7 @@ AVLTree::insert_imp(AVLTreeNode *node,
                     int d)
 {
    AVLTreeNode *insert_node;
+   AVLTreeNode *new_node;
    bool left;
 
    if (node == NULL) {
@@ -330,7 +363,7 @@ AVLTree::insert_imp(AVLTreeNode *node,
    }
 
    if (insert_node != NULL) {
-      insert_imp(insert_node, d);
+      new_node = insert_imp(insert_node, d);
    } else {
       insert_node = new AVLTreeNode;
       insert_node->data = d;
@@ -340,6 +373,10 @@ AVLTree::insert_imp(AVLTreeNode *node,
          node->right = insert_node;
       }
       insert_node->parent = node;
+      new_node = insert_node;
+      update_depth(new_node);
    }
+
+   return new_node;
 }
 
