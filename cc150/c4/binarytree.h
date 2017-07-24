@@ -8,7 +8,9 @@
 #include <iostream>
 
 typedef enum {
-   PRE, POST, IN
+   PRE,
+   POST,
+   IN
 } TraverseType;
 
 class TreeNode
@@ -16,7 +18,7 @@ class TreeNode
 public:
    TreeNode()
    {
-      std::cout << "Build a binary tree node." << std::endl;
+   //   std::cout << "Build a binary tree node." << std::endl;
       left = NULL;
       right = NULL;
    }
@@ -81,6 +83,13 @@ public:
    void insert(int d);
 private:
    AVLTreeNode* insert_imp(AVLTreeNode* node, int d);
+   void update_depth(AVLTreeNode *node);
+   AVLTreeNode* find_non_balance_node(AVLTreeNode *node);
+   void avl_balancing(AVLTreeNode *node);
+   int left_depth(AVLTreeNode *node); 
+   int right_depth(AVLTreeNode *node); 
+   void single_rotate(AVLTreeNode *node, bool insert_l); 
+   void double_rotate(AVLTreeNode *node);
 };
 
 #endif

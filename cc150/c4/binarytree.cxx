@@ -2,6 +2,8 @@
 #include <iostream>
 #include "stddef.h"
 #include <stack>
+#include <stdlib.h>
+#include <algorithm>
 
 BTree::BTree()
 {
@@ -256,7 +258,6 @@ BTree::inorder_nr(TreeNode *node)
 void
 BTree::print(TraverseType type)
 {
-      std::cout << "insert first---" << this->_root << std::endl;
    if (!this->_root) {
       std::cout << "NULL" << std::endl;
       return;
@@ -298,8 +299,9 @@ AVLTree::~AVLTree()
 
 
 void
-update_depth(AVLTreeNode *node)
+AVLTree::update_depth(AVLTreeNode *node)
 {
+   std::cout << "Update depth for node " << node->data << std::endl;
    AVLTreeNode  *p = node;
    if (p == NULL) {
       return;
@@ -315,8 +317,93 @@ update_depth(AVLTreeNode *node)
 }
 
 
+AVLTreeNode*
+AVLTree::find_non_balance_node(AVLTreeNode *node)
+{
+   AVLTreeNode *p = node;
+   while(p) {
+     AVLTreeNode *l = dynamic_cast<AVLTreeNode*>(p->left);
+     AVLTreeNode *r = dynamic_cast<AVLTreeNode*>(p->right);
+     int ldepth = l ? l->depth:0;
+     int rdepth = r ? r->depth:0;
+     if (abs(ldepth - rdepth) > 1) {
+        break;
+     }
+     p = dynamic_cast<AVLTreeNode*>(p->parent); 
+   }
+
+   if (p) {
+      std::cout << "Non balance node is "<< p->data << std::endl;
+   } else {
+      std::cout << "No violent node." << std::endl;
+   }
+   return p;
+}
+
+int
+AVLTree::left_depth(AVLTreeNode *node)
+{
+   AVLTreeNode *l = dynamic_cast<AVLTreeNode*>(node->left);
+   return l?l->depth:0;
+}
+
+
+int
+AVLTree::right_depth(AVLTreeNode *node)
+{
+   AVLTreeNode *r = dynamic_cast<AVLTreeNode*>(node->right);
+   return r?r->depth:0;
+}
+
+
 void
-avl_balancing(AVLTreeNode *node)
+AVLTree::single_rotate(AVLTreeNode *node,
+                       bool left)  // Non balance is at left
+{
+   std::cout << "single rotate. " << std::endl;
+
+   AVLTreeNode *new_root = left? dynamic_cast<AVLTreeNode*>(node->left):
+                                 dynamic_cast<AVLTreeNode*>(node->right);
+
+   AVLTreeNode *tmp = NULL;
+   if (left) {
+      tmp = dynamic_cast<AVLTreeNode*>(new_root->right);
+      new_root->right = node;
+      node->left = tmp;
+   } else {
+      tmp = dynamic_cast<AVLTreeNode*>(new_root->left);
+      new_root->left = node;
+      node->right = tmp;
+   }
+   tmp->parent = node;
+
+   TreeNode *parent = node->parent;  
+   node->parent = new_root;
+
+   if (parent) {
+      if (parent->left == node) {
+         parent->left = new_root;
+      } else {
+         parent->right = new_root;
+      }
+   } else {
+      _root = new_root;
+   }
+   
+   new_root->parent = parent;
+
+   node->depth = std::max(left_depth(node), right_depth(node)) + 1;
+}
+
+
+void
+AVLTree::double_rotate(AVLTreeNode *node)
+{
+}
+
+
+void
+AVLTree::avl_balancing(AVLTreeNode *node)
 {
    AVLTreeNode *target = find_non_balance_node(node);
 
@@ -324,13 +411,42 @@ avl_balancing(AVLTreeNode *node)
       return;
    }
 
+   AVLTreeNode *l = dynamic_cast<AVLTreeNode*>(target->left);
+   AVLTreeNode *r = dynamic_cast<AVLTreeNode*>(target->right);
+   int ldepth = l ? l->depth:0;
+   int rdepth = r ? r->depth:0;
+
+   bool insert_l = (ldepth > rdepth);
+
+   AVLTreeNode *nd;
+  
+   nd = insert_l?l:r;
    
+
+   bool s_rotate = false;
+   if (insert_l) {
+      if (left_depth(nd) > right_depth(nd)) {
+         s_rotate = true; 
+      } 
+   } else {
+      if (left_depth(nd) < right_depth(nd)) {
+         s_rotate = true;
+      }
+   }
+   
+   if (s_rotate) {
+      single_rotate(target, insert_l); 
+   } else {
+      double_rotate(target);
+   }
+
 }
 
 
 void
 AVLTree::insert(int d)
 {
+   std::cout << "insert " << d << std::endl;
    if (_root == NULL) {
       _root = new AVLTreeNode;
       _root->data = d;
