@@ -29,12 +29,12 @@ int main()
 
    AVLTree avl;
    
-   avl.insert(20);
+   avl.insert(30);
    avl.insert(18);
    avl.insert(100);
    avl.insert(16);
+   avl.insert(20);
    avl.insert(19);
-   avl.insert(1);
 /*
    avl.insert(10);
    avl.insert(15);

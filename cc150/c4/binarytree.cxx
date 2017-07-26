@@ -356,14 +356,16 @@ AVLTree::right_depth(AVLTreeNode *node)
 }
 
 
-void
+AVLTreeNode*
 AVLTree::single_rotate(AVLTreeNode *node,
-                       bool left)  // Non balance is at left
+                       bool left)  // Non balance is at left/right
 {
    std::cout << "single rotate. " << std::endl;
 
    AVLTreeNode *new_root = left? dynamic_cast<AVLTreeNode*>(node->left):
                                  dynamic_cast<AVLTreeNode*>(node->right);
+
+   std::cout << " node " << node->data << std::endl;
 
    AVLTreeNode *tmp = NULL;
    if (left) {
@@ -375,7 +377,10 @@ AVLTree::single_rotate(AVLTreeNode *node,
       new_root->left = node;
       node->right = tmp;
    }
-   tmp->parent = node;
+
+   if (tmp) {
+      tmp->parent = node;
+   }
 
    TreeNode *parent = node->parent;  
    node->parent = new_root;
@@ -393,12 +398,30 @@ AVLTree::single_rotate(AVLTreeNode *node,
    new_root->parent = parent;
 
    node->depth = std::max(left_depth(node), right_depth(node)) + 1;
+   new_root->depth = std::max(left_depth(new_root), right_depth(new_root)) + 1;
+
+   return new_root;
 }
 
 
-void
-AVLTree::double_rotate(AVLTreeNode *node)
+AVLTreeNode*
+AVLTree::double_rotate(AVLTreeNode *node,
+                       bool left)  // Non balance is at left/right
 {
+   std::cout << "double rotate. ";
+   if (left) {
+      std::cout << "left" << std::endl;
+   } else {
+      std::cout << "right" << std::endl;
+   }
+
+   AVLTreeNode *r1_node = left? dynamic_cast<AVLTreeNode*>(node->left):
+                                dynamic_cast<AVLTreeNode*>(node->right);
+
+   AVLTreeNode *new_root;
+   new_root = single_rotate(r1_node, !left);
+
+   return single_rotate(node, left);
 }
 
 
@@ -437,7 +460,7 @@ AVLTree::avl_balancing(AVLTreeNode *node)
    if (s_rotate) {
       single_rotate(target, insert_l); 
    } else {
-      double_rotate(target);
+      double_rotate(target, insert_l);
    }
 
 }

@@ -88,8 +88,8 @@ private:
    void avl_balancing(AVLTreeNode *node);
    int left_depth(AVLTreeNode *node); 
    int right_depth(AVLTreeNode *node); 
-   void single_rotate(AVLTreeNode *node, bool insert_l); 
-   void double_rotate(AVLTreeNode *node);
+   AVLTreeNode* single_rotate(AVLTreeNode *node, bool insert_l); 
+   AVLTreeNode* double_rotate(AVLTreeNode *node, bool insert_l);
 };
 
 #endif
