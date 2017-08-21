@@ -2,6 +2,7 @@
 #include <iostream>
 #include "stddef.h"
 #include <stack>
+#include <list>
 #include <stdlib.h>
 #include <algorithm>
 
@@ -15,6 +16,13 @@ BTree::~BTree()
 {
 
 
+}
+
+
+bool
+BTree::is_empty()
+{
+   return (_root == NULL);
 }
 
 
@@ -316,6 +324,42 @@ BTree::is_balanced()
    }
 
    return (max_depth(_root)-min_depth(_root) > 1)? false:true;
+}
+
+
+void
+BTree::get_level_list(std::list<std::list<TreeNode*>*> &llist)
+{
+   if (_root == NULL) {
+      return;
+   }
+
+   std::list<TreeNode*> *cur_list;
+   std::list<TreeNode*> *new_list;
+   new_list = new std::list<TreeNode*>;
+   new_list->push_back(_root);
+   cur_list = new_list;
+   llist.push_back(new_list);
+ 
+   while(cur_list) {
+      new_list = new std::list<TreeNode*>;
+      for(auto &item: *cur_list) {
+         if (item->left) {
+            new_list->push_back(item->left); 
+         }
+         if (item->right) {
+            new_list->push_back(item->right);
+         }
+      }
+
+      if (!new_list->empty()) {
+         llist.push_back(new_list);
+      } else {
+         delete new_list;
+         new_list = NULL;
+      }
+      cur_list = new_list;
+   }
 }
 
 

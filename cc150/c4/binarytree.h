@@ -6,12 +6,14 @@
 #define  _BINARY_TREE_H
 #include "stddef.h"
 #include <iostream>
+#include <list>
 
 typedef enum {
    PRE,
    POST,
    IN
 } TraverseType;
+
 
 class TreeNode
 {
@@ -63,6 +65,8 @@ public:
    void remove(int d);
    void print(TraverseType type, bool verbose = false);
    bool is_balanced();
+   bool is_empty();
+   void get_level_list(std::list<std::list<TreeNode*>*> &llist); 
 protected:
    TreeNode* find_min(TreeNode* node);
    void insert_imp(TreeNode* node, int d);
