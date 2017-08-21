@@ -61,7 +61,8 @@ public:
    ~BTree();
    virtual void insert(int d);
    void remove(int d);
-   void print(TraverseType type);
+   void print(TraverseType type, bool verbose = false);
+   bool is_balanced();
 protected:
    TreeNode* find_min(TreeNode* node);
    void insert_imp(TreeNode* node, int d);

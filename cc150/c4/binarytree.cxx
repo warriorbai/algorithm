@@ -256,7 +256,8 @@ BTree::inorder_nr(TreeNode *node)
 
 
 void
-BTree::print(TraverseType type)
+BTree::print(TraverseType type,
+             bool verbose)
 {
    if (!this->_root) {
       std::cout << "NULL" << std::endl;
@@ -284,6 +285,37 @@ BTree::print(TraverseType type)
    }
    std::cout << std::endl;
   
+}
+
+
+int
+max_depth(TreeNode *node)
+{
+   if (node == NULL) {
+      return 0;
+   }
+   return 1 + std::max(max_depth(node->left), max_depth(node->right));
+}
+
+
+int
+min_depth(TreeNode *node)
+{
+   if (node == NULL) {
+      return 0;
+   }
+   return 1 + std::min(min_depth(node->left), min_depth(node->right));
+}
+
+
+bool
+BTree::is_balanced()
+{
+   if (_root == NULL) {
+      return true;
+   }
+
+   return (max_depth(_root)-min_depth(_root) > 1)? false:true;
 }
 
 
