@@ -79,7 +79,65 @@ get_list_of_binary_tree(BTree* tree,
 }
 
 //4.6 find common ancestor
+// See BTree::find_common_ancestor();
 
+
+// 4.7 Check if a binrary tree is subtree of another.
+
+bool
+match(TreeNode *t1,
+      TreeNode *t2)
+{
+   if (t1 == NULL && t2 == NULL) {
+      return true;
+   }
+
+   if (t1 && t2 && (t1->data == t2->data) &&
+       match(t1->left, t2->left) &&
+       match(t1->right, t2->right)) {
+      return true;
+   } else {
+      return false;
+   } 
+}
+
+
+bool
+is_subtree(TreeNode *n1,
+           TreeNode *n2)
+{
+   if (n1 == NULL) {
+      return false;
+   }
+
+   if (n1->data == n2->data) {
+      if (match(n1, n2)) {
+         return true;
+      }
+   } 
+   
+   return is_subtree(n1->left, n2) || is_subtree(n1->right, n2);
+}
+
+
+// Check if tr1 conmtains tr2.
+bool
+check_contain_tree(BTree *tr1,
+                   BTree *tr2)
+{
+   if (tr2 == NULL || tr2->is_empty()) {
+      return true;
+   }
+
+   if (tr1 == NULL || tr1->is_empty()) {
+      return false;
+   }
+
+   TreeNode *r1 = tr1->get_root();
+   TreeNode *r2 = tr2->get_root();
+
+   return is_subtree(r1, r2);
+}
 
 
 void
@@ -88,7 +146,6 @@ gen_tree(BTree *tree)
    if (!tree) {
       return;
    }
-
 
    tree->insert(101);
    tree->insert(102);
@@ -103,7 +160,20 @@ gen_tree(BTree *tree)
    tree->insert(199);
    tree->insert(55);
    tree->insert(67);
+}
 
+
+void
+gen_tree(BTree *tree,
+         vector<int> &vec)
+{
+   if (!tree) {
+      return;
+   }
+
+   for (auto &i: vec) {
+      tree->insert(i);
+   }
 }
 
 
@@ -134,5 +204,13 @@ int main()
    cout << n1->data << " " << n2->data << endl;
    TreeNode *an = tree->find_common_ancestor(n1, n2);
    cout << "common ancestor is: " << an->data << endl;
+
+   // 4.7
+   cout << "\n4.7 run." << endl;
+   vector<int> vec47 = {105, 207, 200,199 };
+   BTree *tree47 = new BTree();
+   gen_tree(tree47, vec47);
+   bool yes = check_contain_tree(tree, tree47);
+   cout << "Contains. " << (yes? "yes":"no") << endl;
    return 0;
 }

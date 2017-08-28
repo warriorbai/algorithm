@@ -69,6 +69,7 @@ public:
    void get_level_list(std::list<std::list<TreeNode*>*> &llist); 
    TreeNode* get_node(int data);
    TreeNode* find_common_ancestor(TreeNode* n1, TreeNode* n2);
+   TreeNode* get_root() { return _root;}
 protected:
    TreeNode* find_min(TreeNode* node);
    void insert_imp(TreeNode* node, int d);
