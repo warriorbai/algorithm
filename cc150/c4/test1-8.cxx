@@ -78,6 +78,10 @@ get_list_of_binary_tree(BTree* tree,
 
 }
 
+//4.6 find common ancestor
+
+
+
 void
 gen_tree(BTree *tree)
 {
@@ -96,6 +100,9 @@ gen_tree(BTree *tree)
    tree->insert(1);
    tree->insert(200);
    tree->insert(207);
+   tree->insert(199);
+   tree->insert(55);
+   tree->insert(67);
 
 }
 
@@ -120,5 +127,12 @@ int main()
    list<list<TreeNode*>*> llist; 
    get_list_of_binary_tree(tree, llist); 
 
+   // 4.6
+   cout << "\n4.6 run." << endl;
+   TreeNode *n1 = tree->get_node(101); 
+   TreeNode *n2 = tree->get_node(101); 
+   cout << n1->data << " " << n2->data << endl;
+   TreeNode *an = tree->find_common_ancestor(n1, n2);
+   cout << "common ancestor is: " << an->data << endl;
    return 0;
 }

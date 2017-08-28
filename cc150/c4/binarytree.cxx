@@ -363,6 +363,114 @@ BTree::get_level_list(std::list<std::list<TreeNode*>*> &llist)
 }
 
 
+TreeNode* 
+BTree::get_node(int data)
+{
+   TreeNode *p = _root;
+
+   while(p) {
+      if (p->data == data) {
+         return p;
+      } else if (data > p->data) {
+         p = p->right;
+      } else {
+         p = p->left;
+      }
+   }
+
+   return p;
+}
+
+
+#define NOT_FOUND       0
+#define ONE_NODE_FOUND  1
+#define TWO_NODES_FOUND 2
+
+TreeNode*
+BTree::search_nodes(TreeNode* root,
+                    TreeNode* n1,
+                    TreeNode* n2,
+                    int &status)
+                            
+{
+   if (root == NULL) {
+      status = NOT_FOUND;
+      return NULL;
+   }
+
+   std::cout << "search root: " << root->data << std::endl;
+
+   if ((n1 == n2) && (n1 == root->left || n1 == root->right || n1 == root)) {
+      std::cout << " return: found 2  1" << std::endl;
+      status = TWO_NODES_FOUND;
+      return root;
+   }
+
+   int status_l;
+   TreeNode* res_left = search_nodes(root->left, n1 , n2, status_l);
+
+   if (status_l == TWO_NODES_FOUND) {
+      return res_left;
+   } else if (status_l == ONE_NODE_FOUND) {
+      if (root == n1) {
+         status = TWO_NODES_FOUND;
+         return n1;
+      } else if (root == n2) {
+         status = TWO_NODES_FOUND;
+         return n2;
+      }
+   }
+
+   int status_r;
+   TreeNode* res_right = search_nodes(root->right, n1 , n2, status_r);
+
+   if (status_r == TWO_NODES_FOUND) {
+      return res_right;
+   } else if (status_r == ONE_NODE_FOUND) {
+      if (root == n1) {
+         status = TWO_NODES_FOUND;
+         return n1;
+      } else if (root == n2) {
+         status = TWO_NODES_FOUND;
+         return n2;
+      }
+   }
+
+   if (status_l == ONE_NODE_FOUND && status_r == ONE_NODE_FOUND) {
+      std::cout << " return: found 2   left and right child" << std::endl;
+      status = TWO_NODES_FOUND;
+      return root;
+   } 
+
+   if (status_l == ONE_NODE_FOUND || 
+       status_r == ONE_NODE_FOUND || 
+       root == n1 ||
+       root == n2) {
+      std::cout << " return: found 1" << std::endl;
+      status = ONE_NODE_FOUND;
+   } else {
+      status = NOT_FOUND;
+   }
+
+   return NULL;
+}
+
+
+TreeNode*
+BTree::find_common_ancestor(TreeNode* n1,
+                            TreeNode* n2)
+{
+   if (_root == NULL) {
+      return NULL;
+   }
+
+   int status;
+   TreeNode* ret = search_nodes(_root, n1, n2, status); 
+
+   return ret;
+}
+
+
 AVLTree::AVLTree()
 {
    _root = NULL;

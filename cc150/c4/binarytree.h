@@ -67,6 +67,8 @@ public:
    bool is_balanced();
    bool is_empty();
    void get_level_list(std::list<std::list<TreeNode*>*> &llist); 
+   TreeNode* get_node(int data);
+   TreeNode* find_common_ancestor(TreeNode* n1, TreeNode* n2);
 protected:
    TreeNode* find_min(TreeNode* node);
    void insert_imp(TreeNode* node, int d);
@@ -77,6 +79,7 @@ protected:
    void postorder_nr(TreeNode* node);
    void inorder(TreeNode* node);
    void inorder_nr(TreeNode* node);
+   TreeNode* search_nodes(TreeNode* root, TreeNode* n1, TreeNode* n2, int &status);
    TreeNode* _root;
 };
 
