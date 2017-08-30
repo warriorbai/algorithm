@@ -140,6 +140,60 @@ check_contain_tree(BTree *tr1,
 }
 
 
+// 4.8 Find path that sum to a value.
+void
+print_path(vector<TreeNode*> &vnodes,
+           int idx)
+{
+   for (int i = idx; i < vnodes.size(); i++) {
+      std::cout << vnodes[i]->data << " ";
+   }
+   std::cout << std::endl;
+}
+
+
+void
+find_path(TreeNode *root,
+          int val,
+          vector<TreeNode*> &vnodes)
+{
+   if (root) {
+      vnodes.push_back(root);
+   } else {
+      return;
+   }
+   
+   int size = vnodes.size();
+   int tmp = val;
+
+   for(int i = size-1; i >= 0; i--) {
+      tmp = tmp - vnodes[i]->data;
+      if (tmp == 0) {
+         print_path(vnodes, i);
+      }
+   }
+
+   find_path(root->left, val, vnodes);
+   find_path(root->right, val, vnodes);
+
+   vnodes.pop_back();
+}
+
+
+void
+find_paths_sum_to_value(BTree *tree,
+                        int value)
+{
+   if (tree == NULL || tree->is_empty()) {
+      return;
+   }
+
+   TreeNode *root = tree->get_root();
+   vector<TreeNode*> vnodes;
+   find_path(root, value, vnodes);
+}
+
+
 void
 gen_tree(BTree *tree)
 {
@@ -207,10 +261,19 @@ int main()
 
    // 4.7
    cout << "\n4.7 run." << endl;
-   vector<int> vec47 = {105, 207, 200,199 };
+   vector<int> vec47 = {105, 207, 200, 199};
    BTree *tree47 = new BTree();
    gen_tree(tree47, vec47);
    bool yes = check_contain_tree(tree, tree47);
    cout << "Contains. " << (yes? "yes":"no") << endl;
+
+   // 4.8
+   cout << "\n4.8 run." << endl;
+   int val = 105;
+   cin >> val;
+   vector<int> vec48 = {50, 25, 55, 100, 20, 30, 5, 45};
+   BTree *tree48 = new BTree();
+   gen_tree(tree48, vec48);
+   find_paths_sum_to_value(tree48, val); 
    return 0;
 }
